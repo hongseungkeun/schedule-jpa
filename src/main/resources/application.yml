@@ -3,7 +3,7 @@ spring:
     name: schedule-jpa
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/schedule_jpa?characterEncoding=utf8
+    url: jdbc:mysql://localhost:3306/calendar?characterEncoding=utf8
     username: root
     password: 1234
   jpa:
