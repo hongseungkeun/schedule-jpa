@@ -10,6 +10,7 @@ public record UserDetailRes(
         String name,
         String email
 ) {
+
     public static UserDetailRes from(User user) {
         return UserDetailRes.builder()
                 .id(user.getId())

@@ -6,6 +6,7 @@ public record UserSignUpReq(
         String email,
         String name
 ) {
+
     public User toEntity() {
         return User.builder()
                 .email(this.email)
