@@ -1,18 +1,19 @@
 package com.sparta.scheduleJpa.domain.schedule.entity;
 
-import com.sparta.scheduleJpa.domain.common.entity.BaseEntity;
+import com.sparta.scheduleJpa.domain.common.entity.AuditableEntity;
+import com.sparta.scheduleJpa.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
-@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Schedule extends BaseEntity {
+public class Schedule extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,20 +21,22 @@ public class Schedule extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String userName;
-
-    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     private String todo;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
+
     @Builder
-    public Schedule(Long id, String userName, String title, String todo) {
+    public Schedule(Long id, String title, String todo, User user) {
         this.id = id;
-        this.userName = userName;
         this.title = title;
         this.todo = todo;
+        this.user = user;
     }
 
     public void updateSchedule(String title, String todo) {

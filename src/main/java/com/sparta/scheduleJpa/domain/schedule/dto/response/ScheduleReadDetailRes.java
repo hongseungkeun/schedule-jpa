@@ -22,11 +22,11 @@ public record ScheduleReadDetailRes(
     public static ScheduleReadDetailRes from(Schedule schedule) {
         return ScheduleReadDetailRes.builder()
                 .scheduleId(schedule.getId())
-                .userName(schedule.getUserName())
                 .title(schedule.getTitle())
                 .todo(schedule.getTodo())
                 .createdAt(schedule.getCreatedAt())
                 .updatedAt(schedule.getUpdatedAt())
+                .userName(schedule.getUser().getName())
                 .build();
     }
 }
