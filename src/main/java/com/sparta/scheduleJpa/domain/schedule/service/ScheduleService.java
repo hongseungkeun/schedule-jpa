@@ -6,6 +6,8 @@ import com.sparta.scheduleJpa.domain.schedule.dto.response.ScheduleReadDetailRes
 import com.sparta.scheduleJpa.domain.schedule.entity.Schedule;
 import com.sparta.scheduleJpa.domain.schedule.exception.ScheduleNotFoundException;
 import com.sparta.scheduleJpa.domain.schedule.repository.ScheduleRepository;
+import com.sparta.scheduleJpa.domain.user.entity.User;
+import com.sparta.scheduleJpa.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +19,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleService {
 
+    private final UserService userService;
     private final ScheduleRepository scheduleRepository;
 
     @Transactional
     public Long createSchedule(ScheduleCreateReq request) {
-        Schedule schedule = scheduleRepository.save(request.toEntity());
+        User user = userService.findUserById(request.id());
+        Schedule schedule = scheduleRepository.save(request.toEntity(user));
+
         return schedule.getId();
     }
 
