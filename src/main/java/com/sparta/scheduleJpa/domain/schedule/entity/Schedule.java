@@ -26,7 +26,7 @@ public class Schedule extends AuditableEntity {
     @Column(nullable = false)
     private String todo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
