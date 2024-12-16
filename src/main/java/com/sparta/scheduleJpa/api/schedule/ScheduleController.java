@@ -4,6 +4,8 @@ import com.sparta.scheduleJpa.domain.schedule.dto.request.ScheduleCreateReq;
 import com.sparta.scheduleJpa.domain.schedule.dto.request.ScheduleUpdateReq;
 import com.sparta.scheduleJpa.domain.schedule.dto.response.ScheduleReadDetailRes;
 import com.sparta.scheduleJpa.domain.schedule.service.ScheduleService;
+import com.sparta.scheduleJpa.global.util.SessionUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +23,10 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<Void> createSchedule(
-            @RequestBody final ScheduleCreateReq request
+            @RequestBody @Valid final ScheduleCreateReq request,
+            @SessionAttribute(name = SessionUtil.SESSION_KEY) final Long loginUserId
     ) {
-        Long scheduleId = scheduleService.createSchedule(request);
+        Long scheduleId = scheduleService.createSchedule(request, loginUserId);
 
         URI uri = UriComponentsBuilder.fromPath("/api/schedules/{scheduleId}")
                 .buildAndExpand(scheduleId)
@@ -47,18 +50,20 @@ public class ScheduleController {
     @PatchMapping("/{scheduleId}")
     public ResponseEntity<Void> updateSchedule(
             @PathVariable final Long scheduleId,
-            @RequestBody final ScheduleUpdateReq request
+            @RequestBody @Valid final ScheduleUpdateReq request,
+            @SessionAttribute(name = SessionUtil.SESSION_KEY) final Long loginUserId
     ) {
-        scheduleService.updateSchedule(scheduleId, request);
+        scheduleService.updateSchedule(scheduleId, request, loginUserId);
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity<Void> deleteSchedule(
-            @PathVariable final Long scheduleId
+            @PathVariable final Long scheduleId,
+            @SessionAttribute(name = SessionUtil.SESSION_KEY) final Long loginUserId
     ) {
-        scheduleService.deleteSchedule(scheduleId);
+        scheduleService.deleteSchedule(scheduleId, loginUserId);
 
         return ResponseEntity.noContent().build();
     }

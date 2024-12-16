@@ -67,11 +67,13 @@ public class UserService {
         }
     }
 
-    private User checkUserAuthentication(Long userId, Long loginUserId) {
-        if (!userId.equals(loginUserId)) {
+    public User checkUserAuthentication(Long userId, Long loginUserId) {
+        User user = findUserById(userId);
+
+        if (!user.getId().equals(loginUserId)) {
             throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
         }
 
-        return findUserById(userId);
+        return user;
     }
 }
