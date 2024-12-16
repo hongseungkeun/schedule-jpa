@@ -1,9 +1,12 @@
 package com.sparta.scheduleJpa.api.user;
 
+import com.sparta.scheduleJpa.domain.user.dto.request.UserLoginReq;
 import com.sparta.scheduleJpa.domain.user.dto.request.UserSignUpReq;
 import com.sparta.scheduleJpa.domain.user.dto.request.UserUpdateReq;
 import com.sparta.scheduleJpa.domain.user.dto.response.UserDetailRes;
 import com.sparta.scheduleJpa.domain.user.service.UserService;
+import com.sparta.scheduleJpa.global.util.SessionUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +25,25 @@ public class UserController {
     public ResponseEntity<Void> signUp(
             @RequestBody final UserSignUpReq request
     ) {
-        Long userId = userService.signUp(request);
+        final Long userId = userService.signUp(request);
 
-        URI uri = UriComponentsBuilder.fromPath("/api/users/{userId}")
+        final URI uri = UriComponentsBuilder.fromPath("/api/users/{userId}")
                 .buildAndExpand(userId)
                 .toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Void> login(
+            @RequestBody final UserLoginReq request,
+            HttpServletRequest httpServletRequest
+    ) {
+        final Long id = userService.login(request);
+
+        SessionUtil.createSession(id, httpServletRequest);
+
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{userId}")
