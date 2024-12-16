@@ -1,6 +1,7 @@
 package com.sparta.scheduleJpa.domain.user.entity;
 
 import com.sparta.scheduleJpa.domain.common.entity.BaseEntity;
+import com.sparta.scheduleJpa.domain.user.exception.LoginFailedException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,7 +21,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -37,6 +38,12 @@ public class User extends BaseEntity {
     public void updateName(String name) {
         if (name != null) {
             this.name = name;
+        }
+    }
+
+    public void isPossibleLogin(String password) {
+        if (!this.password.equals(password)) {
+            throw new LoginFailedException("비밀번호가 일치하지 않습니다.");
         }
     }
 }
