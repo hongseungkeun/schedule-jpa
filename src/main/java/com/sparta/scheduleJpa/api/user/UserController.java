@@ -7,6 +7,7 @@ import com.sparta.scheduleJpa.domain.user.dto.response.UserDetailRes;
 import com.sparta.scheduleJpa.domain.user.service.UserService;
 import com.sparta.scheduleJpa.global.util.SessionUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<Void> signUp(
-            @RequestBody final UserSignUpReq request
+            @RequestBody @Valid final UserSignUpReq request
     ) {
         final Long userId = userService.signUp(request);
 
@@ -36,7 +37,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(
-            @RequestBody final UserLoginReq request,
+            @RequestBody @Valid final UserLoginReq request,
             HttpServletRequest httpServletRequest
     ) {
         final Long id = userService.login(request);
@@ -56,18 +57,20 @@ public class UserController {
     @PatchMapping("/{userId}")
     public ResponseEntity<Void> updateUser(
             @PathVariable final Long userId,
-            @RequestBody final UserUpdateReq request
+            @RequestBody @Valid final UserUpdateReq request,
+            @SessionAttribute(name = SessionUtil.SESSION_KEY, required = true) Long loginUserId
     ) {
-        userService.updateUser(userId, request);
+        userService.updateUser(userId, request, loginUserId);
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable final Long userId
+            @PathVariable final Long userId,
+            @SessionAttribute(name = SessionUtil.SESSION_KEY, required = true) Long loginUserId
     ) {
-        userService.deleteUser(userId);
+        userService.deleteUser(userId, loginUserId);
 
         return ResponseEntity.noContent().build();
     }

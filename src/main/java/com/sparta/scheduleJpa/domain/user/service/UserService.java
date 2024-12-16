@@ -4,8 +4,11 @@ import com.sparta.scheduleJpa.domain.user.dto.request.UserLoginReq;
 import com.sparta.scheduleJpa.domain.user.dto.request.UserSignUpReq;
 import com.sparta.scheduleJpa.domain.user.dto.request.UserUpdateReq;
 import com.sparta.scheduleJpa.domain.user.entity.User;
+import com.sparta.scheduleJpa.domain.user.exception.AlreadyExistUserException;
 import com.sparta.scheduleJpa.domain.user.exception.UserNotFoundException;
 import com.sparta.scheduleJpa.domain.user.repository.UserRepository;
+import com.sparta.scheduleJpa.global.exception.UnauthorizedException;
+import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,8 @@ public class UserService {
 
     @Transactional
     public Long signUp(UserSignUpReq request) {
+        isExistEmail(request.email());
+
         User user = userRepository.save(request.toEntity());
 
         return user.getId();
@@ -33,24 +38,40 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long userId, UserUpdateReq request) {
-        User user = findUserById(userId);
+    public void updateUser(Long userId, UserUpdateReq request, Long loginUserId) {
+        User user = checkUserAuthentication(userId, loginUserId);
 
         user.updateName(request.name());
     }
 
     @Transactional
-    public void deleteUser(Long userId) {
+    public void deleteUser(Long userId, Long loginUserId) {
+        checkUserAuthentication(userId, loginUserId);
+
         userRepository.deleteById(userId);
     }
 
     public User findUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다"));
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("유저가 존재하지 않습니다"));
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private void isExistEmail(String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new AlreadyExistUserException(ErrorCode.ALREADY_EXIST_USER);
+        }
+    }
+
+    private User checkUserAuthentication(Long userId, Long loginUserId) {
+        if (!userId.equals(loginUserId)) {
+            throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
+        }
+
+        return findUserById(userId);
     }
 }
