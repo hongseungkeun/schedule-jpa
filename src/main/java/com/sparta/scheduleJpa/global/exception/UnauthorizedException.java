@@ -1,7 +1,9 @@
 package com.sparta.scheduleJpa.global.exception;
 
-public class UnauthorizedException extends RuntimeException {
-    public UnauthorizedException(String message) {
-        super(message);
+import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
+
+public class UnauthorizedException extends CustomRuntimeException {
+    public UnauthorizedException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }

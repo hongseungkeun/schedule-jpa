@@ -1,7 +1,10 @@
 package com.sparta.scheduleJpa.domain.schedule.exception;
 
-public class ScheduleNotFoundException extends RuntimeException {
-    public ScheduleNotFoundException(String message) {
-        super(message);
+import com.sparta.scheduleJpa.global.exception.CustomRuntimeException;
+import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
+
+public class ScheduleNotFoundException extends CustomRuntimeException {
+    public ScheduleNotFoundException(ErrorCode errorCode) {
+        super(errorCode);
     }
 }

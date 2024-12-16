@@ -1,7 +1,8 @@
 package com.sparta.scheduleJpa.domain.user.entity;
 
 import com.sparta.scheduleJpa.domain.common.entity.BaseEntity;
-import com.sparta.scheduleJpa.domain.user.exception.LoginFailedException;
+import com.sparta.scheduleJpa.domain.user.exception.PasswordNotMatchedException;
+import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -43,7 +44,7 @@ public class User extends BaseEntity {
 
     public void isPossibleLogin(String password) {
         if (!this.password.equals(password)) {
-            throw new LoginFailedException("비밀번호가 일치하지 않습니다.");
+            throw new PasswordNotMatchedException(ErrorCode.PASSWORD_NOT_MATCHED);
         }
     }
 }

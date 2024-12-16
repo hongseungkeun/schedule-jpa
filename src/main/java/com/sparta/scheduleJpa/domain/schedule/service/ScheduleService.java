@@ -8,6 +8,7 @@ import com.sparta.scheduleJpa.domain.schedule.exception.ScheduleNotFoundExceptio
 import com.sparta.scheduleJpa.domain.schedule.repository.ScheduleRepository;
 import com.sparta.scheduleJpa.domain.user.entity.User;
 import com.sparta.scheduleJpa.domain.user.service.UserService;
+import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,8 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
     @Transactional
-    public Long createSchedule(ScheduleCreateReq request) {
-        User user = userService.findUserById(request.id());
+    public Long createSchedule(ScheduleCreateReq request, Long loginUserId) {
+        User user = userService.findUserById(loginUserId);
         Schedule schedule = scheduleRepository.save(request.toEntity(user));
 
         return schedule.getId();
@@ -42,19 +43,29 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void updateSchedule(Long scheduleId, ScheduleUpdateReq request) {
-        Schedule schedule = findScheduleById(scheduleId);
+    public void updateSchedule(Long scheduleId, ScheduleUpdateReq request, Long loginUserId) {
+        Schedule schedule = checkUserAuthentication(scheduleId, loginUserId);
 
         schedule.updateSchedule(request.title(), request.todo());
     }
 
     @Transactional
-    public void deleteSchedule(Long scheduleId) {
+    public void deleteSchedule(Long scheduleId, Long loginUserId) {
+        checkUserAuthentication(scheduleId, loginUserId);
+
         scheduleRepository.deleteById(scheduleId);
     }
 
     private Schedule findScheduleById(Long scheduleId) {
         return scheduleRepository.findById(scheduleId)
-                .orElseThrow(() -> new ScheduleNotFoundException("일정을 찾을 수 없습니다"));
+                .orElseThrow(() -> new ScheduleNotFoundException(ErrorCode.SCHEDULE_NOT_FOUND_EXCEPTION));
+    }
+
+    private Schedule checkUserAuthentication(Long scheduleId, Long loginUserId) {
+        Schedule schedule = findScheduleById(scheduleId);
+
+        userService.checkUserAuthentication(schedule.getUser().getId(), loginUserId);
+
+        return schedule;
     }
 }

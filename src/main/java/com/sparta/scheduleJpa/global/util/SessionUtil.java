@@ -1,6 +1,7 @@
 package com.sparta.scheduleJpa.global.util;
 
 import com.sparta.scheduleJpa.global.exception.UnauthorizedException;
+import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
@@ -27,7 +28,7 @@ public class SessionUtil {
 
     public static void validateSession(HttpSession session) {
         if (session == null || getSession(session) == null) {
-            throw new UnauthorizedException("권한이 없습니다.");
+            throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
         }
     }
 }
