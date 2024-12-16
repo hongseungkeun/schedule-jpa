@@ -20,10 +20,10 @@ public record UserSignUpReq(
         String name
 ) {
 
-    public User toEntity() {
+    public User toEntity(String encodedPassword) {
         return User.builder()
                 .email(this.email)
-                .password(this.password)
+                .password(encodedPassword)
                 .name(this.name)
                 .build();
     }
