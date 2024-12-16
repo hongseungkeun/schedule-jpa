@@ -39,7 +39,7 @@ public class Schedule extends AuditableEntity {
         this.user = user;
     }
 
-    public void updateSchedule(String title, String todo) {
+    public void update(String title, String todo) {
         updateTitle(title);
         updateTodo(todo);
     }

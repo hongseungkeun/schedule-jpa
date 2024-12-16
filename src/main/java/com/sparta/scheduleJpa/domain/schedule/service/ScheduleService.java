@@ -46,7 +46,7 @@ public class ScheduleService {
     public void updateSchedule(Long scheduleId, ScheduleUpdateReq request, Long loginUserId) {
         Schedule schedule = checkUserAuthentication(scheduleId, loginUserId);
 
-        schedule.updateSchedule(request.title(), request.todo());
+        schedule.update(request.title(), request.todo());
     }
 
     @Transactional
