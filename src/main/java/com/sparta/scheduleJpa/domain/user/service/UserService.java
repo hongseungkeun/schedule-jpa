@@ -5,8 +5,10 @@ import com.sparta.scheduleJpa.domain.user.dto.request.UserSignUpReq;
 import com.sparta.scheduleJpa.domain.user.dto.request.UserUpdateReq;
 import com.sparta.scheduleJpa.domain.user.entity.User;
 import com.sparta.scheduleJpa.domain.user.exception.AlreadyExistUserException;
+import com.sparta.scheduleJpa.domain.user.exception.PasswordNotMatchedException;
 import com.sparta.scheduleJpa.domain.user.exception.UserNotFoundException;
 import com.sparta.scheduleJpa.domain.user.repository.UserRepository;
+import com.sparta.scheduleJpa.global.config.PasswordEncoder;
 import com.sparta.scheduleJpa.global.exception.UnauthorizedException;
 import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Long signUp(UserSignUpReq request) {
         isExistEmail(request.email());
 
-        User user = userRepository.save(request.toEntity());
+        User user = userRepository.save(request.toEntity(encodePassword(request.password())));
 
         return user.getId();
     }
@@ -32,7 +35,9 @@ public class UserService {
     public Long login(UserLoginReq request) {
         User user = findUserByEmail(request.email());
 
-        user.isPossibleLogin(request.password());
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            throw new PasswordNotMatchedException(ErrorCode.PASSWORD_NOT_MATCHED);
+        }
 
         return user.getId();
     }
@@ -41,7 +46,7 @@ public class UserService {
     public void updateUser(Long userId, UserUpdateReq request, Long loginUserId) {
         User user = checkUserAuthentication(userId, loginUserId);
 
-        user.updateName(request.name());
+        user.update(request.name(), encodePassword(request.password()));
     }
 
     @Transactional
@@ -56,6 +61,16 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
+    public User checkUserAuthentication(Long userId, Long loginUserId) {
+        User user = findUserById(userId);
+
+        if (!user.getId().equals(loginUserId)) {
+            throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
+        }
+
+        return user;
+    }
+
     private User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
@@ -67,13 +82,7 @@ public class UserService {
         }
     }
 
-    public User checkUserAuthentication(Long userId, Long loginUserId) {
-        User user = findUserById(userId);
-
-        if (!user.getId().equals(loginUserId)) {
-            throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
-        }
-
-        return user;
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }

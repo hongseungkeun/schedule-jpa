@@ -1,8 +1,6 @@
 package com.sparta.scheduleJpa.domain.user.entity;
 
 import com.sparta.scheduleJpa.domain.common.entity.BaseEntity;
-import com.sparta.scheduleJpa.domain.user.exception.PasswordNotMatchedException;
-import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,15 +34,20 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public void updateName(String name) {
+    public void update(String name, String password) {
+        updateName(name);
+        updatePassword(password);
+    }
+
+    private void updateName(String name) {
         if (name != null) {
             this.name = name;
         }
     }
 
-    public void isPossibleLogin(String password) {
-        if (!this.password.equals(password)) {
-            throw new PasswordNotMatchedException(ErrorCode.PASSWORD_NOT_MATCHED);
+    private void updatePassword(String password) {
+        if (password != null) {
+            this.password = password;
         }
     }
 }
