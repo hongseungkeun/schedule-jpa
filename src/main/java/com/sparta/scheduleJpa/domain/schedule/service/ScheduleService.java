@@ -10,10 +10,11 @@ import com.sparta.scheduleJpa.domain.user.entity.User;
 import com.sparta.scheduleJpa.domain.user.service.UserService;
 import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,11 +32,11 @@ public class ScheduleService {
         return schedule.getId();
     }
 
-    public List<ScheduleReadDetailRes> readOverallSchedule() {
-        return scheduleRepository.findAll()
+    public Page<ScheduleReadDetailRes> readOverallSchedule(Pageable pageable) {
+        return new PageImpl<>(scheduleRepository.findAll(pageable)
                 .stream()
                 .map(ScheduleReadDetailRes::from)
-                .toList();
+                .toList());
     }
 
     public ScheduleReadDetailRes readDetailSchedule(Long scheduleId) {
