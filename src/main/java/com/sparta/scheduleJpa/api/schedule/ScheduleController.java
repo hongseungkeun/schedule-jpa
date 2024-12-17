@@ -26,9 +26,9 @@ public class ScheduleController {
             @RequestBody @Valid final ScheduleCreateReq request,
             @SessionAttribute(name = SessionUtil.SESSION_KEY) final Long loginUserId
     ) {
-        Long scheduleId = scheduleService.createSchedule(request, loginUserId);
+        final Long scheduleId = scheduleService.createSchedule(request, loginUserId);
 
-        URI uri = UriComponentsBuilder.fromPath("/api/schedules/{scheduleId}")
+        final URI uri = UriComponentsBuilder.fromPath("/api/schedules/{scheduleId}")
                 .buildAndExpand(scheduleId)
                 .toUri();
 

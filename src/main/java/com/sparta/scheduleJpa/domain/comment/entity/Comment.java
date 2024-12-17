@@ -1,4 +1,4 @@
-package com.sparta.scheduleJpa.domain.schedule.comment.entity;
+package com.sparta.scheduleJpa.domain.comment.entity;
 
 import com.sparta.scheduleJpa.domain.common.entity.AuditableEntity;
 import com.sparta.scheduleJpa.domain.schedule.entity.Schedule;
@@ -40,5 +40,11 @@ public class Comment extends AuditableEntity {
         this.content = content;
         this.schedule = schedule;
         this.user = user;
+    }
+
+    public void updateContent(String content) {
+        if (content != null) {
+            this.content = content;
+        }
     }
 }
