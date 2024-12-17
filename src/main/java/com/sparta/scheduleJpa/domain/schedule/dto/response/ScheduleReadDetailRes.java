@@ -16,7 +16,8 @@ public record ScheduleReadDetailRes(
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime createdAt,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        Long commentCount
 ) {
 
     public static ScheduleReadDetailRes from(Schedule schedule) {
