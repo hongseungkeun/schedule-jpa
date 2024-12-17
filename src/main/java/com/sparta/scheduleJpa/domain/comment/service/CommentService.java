@@ -37,10 +37,7 @@ public class CommentService {
     }
 
     public List<CommentReadDetailRes> readOverallComments(Long scheduleId) {
-        return commentRepository.findAllByScheduleIdOrderByCreatedAtDesc(scheduleId)
-                .stream()
-                .map(CommentReadDetailRes::from)
-                .toList();
+        return commentRepository.findAllByScheduleIdOrderByCreatedAtDesc(scheduleId);
     }
 
     @Transactional
