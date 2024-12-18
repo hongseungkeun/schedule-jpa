@@ -42,7 +42,7 @@
 
 ## API 명세서
 
-- [REST Docs]
+- [REST Docs](https://hongseungkeun.github.io/schedule-jpa/src/main/resources/static/docs/index.html)
 
 ## ERD
 
