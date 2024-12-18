@@ -13,14 +13,14 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     @Query("SELECT new com.sparta.scheduleJpa.domain.schedule.dto.response.ScheduleReadDetailRes" +
             "(s.id, s.title, s.todo, s.createdAt, s.updatedAt, s.user.id, s.user.name, COUNT(c.id)) FROM Schedule s LEFT JOIN Comment c " +
-            "on s.id = c.schedule.id " +
+            "ON s.id = c.schedule.id " +
             "GROUP BY s.id, s.title, s.todo, s.createdAt, s.updatedAt, s.user.id, s.user.name")
     List<ScheduleReadDetailRes> findSchedulesAndCommentCountAll(Pageable pageable);
 
     @Query("SELECT new com.sparta.scheduleJpa.domain.schedule.dto.response.ScheduleReadDetailRes" +
             "(s.id, s.title, s.todo, s.createdAt, s.updatedAt, s.user.id, s.user.name, COUNT(c.id)) FROM Schedule s LEFT JOIN Comment c " +
-            "on s.id = c.schedule.id " +
-            "where s.id = :schedule_id " +
+            "ON s.id = c.schedule.id " +
+            "WHERE s.id = :schedule_id " +
             "GROUP BY s.id, s.title, s.todo, s.createdAt, s.updatedAt, s.user.id, s.user.name")
     ScheduleReadDetailRes findSchedulesAndCommentCountById(@Param("schedule_id") Long scheduleId);
 }
