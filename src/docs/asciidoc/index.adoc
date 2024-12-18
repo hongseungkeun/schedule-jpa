@@ -1,0 +1,256 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= 일정 관리 앱 Develop
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+= 유저
+
+== 회원 가입
+
+=== 요청 구조
+
+include::{snippets}/user-signUp/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/user-signUp/request-fields.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/user-signUp/http-response.adoc[]
+
+== 회원 가입 이메일 중복 실패
+
+=== 요청 구조
+
+include::{snippets}/user-signUp-fail/http-request.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/user-signUp-fail/http-response.adoc[]
+
+==== 응답 파라미터
+
+include::{snippets}/user-signUp-fail/response-fields.adoc[]
+
+== 로그인
+
+=== 요청 구조
+
+include::{snippets}/user-login/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/user-login/request-fields.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/user-login/http-response.adoc[]
+
+== 로그인 비밀번호 불일치 실패
+
+=== 요청 구조
+
+include::{snippets}/user-login-fail/http-request.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/user-login-fail/http-response.adoc[]
+
+==== 응답 파라미터
+
+include::{snippets}/user-login-fail/response-fields.adoc[]
+
+== 유저 조회
+
+=== 요청 구조
+
+include::{snippets}/user-get/http-request.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/user-get/http-response.adoc[]
+
+==== 응답 파라미터
+
+include::{snippets}/user-get/response-fields.adoc[]
+
+== 유저 수정
+
+=== 요청 구조
+
+include::{snippets}/user-update/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/user-update/path-parameters.adoc[]
+include::{snippets}/user-update/request-fields.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/user-update/http-response.adoc[]
+
+== 유저 삭제
+
+=== 요청 구조
+
+include::{snippets}/user-delete/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/user-delete/path-parameters.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/user-delete/http-response.adoc[]
+
+= 일정
+
+== 일정 등록
+
+=== 요청 구조
+
+include::{snippets}/schedule-create/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/schedule-create/request-fields.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/schedule-create/http-response.adoc[]
+
+== 일정 단건 조회
+
+=== 요청 구조
+
+include::{snippets}/schedule-read/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/schedule-read/path-parameters.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/schedule-read/http-response.adoc[]
+
+==== 응답 파라미터
+
+include::{snippets}/schedule-read/response-fields.adoc[]
+
+== 일정 전체 조회
+
+=== 요청 구조
+
+include::{snippets}/schedule-read-all/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/schedule-read-all/query-parameters.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/schedule-read-all/http-response.adoc[]
+
+==== 응답 파라미터
+
+include::{snippets}/schedule-read-all/response-fields.adoc[]
+
+== 일정 수정
+
+=== 요청 구조
+
+include::{snippets}/schedule-update/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/schedule-update/path-parameters.adoc[]
+include::{snippets}/schedule-update/request-fields.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/schedule-update/http-response.adoc[]
+
+== 일정 삭제
+
+=== 요청 구조
+
+include::{snippets}/schedule-delete/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/schedule-delete/path-parameters.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/schedule-delete/http-response.adoc[]
+
+= 댓글
+
+== 댓글 등록
+
+=== 요청 구조
+
+include::{snippets}/comment-create/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/comment-create/request-fields.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/comment-create/http-response.adoc[]
+
+== 댓글 전체 조회
+
+=== 요청 구조
+
+include::{snippets}/comment-read-all/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/comment-read-all/path-parameters.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/comment-read-all/http-response.adoc[]
+
+==== 응답 파라미터
+
+include::{snippets}/comment-read-all/response-fields.adoc[]
+
+== 댓글 수정
+
+=== 요청 구조
+
+include::{snippets}/comment-update/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/comment-update/path-parameters.adoc[]
+include::{snippets}/comment-update/request-fields.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/comment-update/http-response.adoc[]
+
+== 댓글 삭제
+
+=== 요청 구조
+
+include::{snippets}/comment-delete/http-request.adoc[]
+
+==== 요청 파라미터
+
+include::{snippets}/comment-delete/path-parameters.adoc[]
+
+=== 응답 구조
+
+include::{snippets}/comment-delete/http-response.adoc[]

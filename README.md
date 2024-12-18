@@ -1,12 +1,83 @@
 # 일정 관리 앱 Develop 과제
 
+일정을 관리할 수 있는 앱 API 만들기
+
 ## 프로젝트 목표
+
+- 기본 `CRUD`에 대한 구조 학습
+- `JPA`를 활용한 데이터베이스 관리
+- `Cookie/Session`을 활용한 인증/인가
 
 ## 주요 기능
 
+- 유저
+    - 회원가입, 로그인을 할 수 있다.
+        - 중복된 이메일이 이미 존재한다면 회원가입할 수 없다.
+        - 비밀번호가 일치하지 않다면 로그인할 수 없다.
+    - 로그아웃을 할 수 있다.
+        - 로그인을 하지 않은 유저는 로그아웃을 할 수 없다.
+    - 유저의 정보를 조회할 수 있다.
+    - 본인의 정보를 수정하거나 삭제할 수 있다.
+        - 본인이 아니라면 수정, 삭제할 수 없다.
+- 일정
+    - 일정을 생성할 수 있다.
+        - 로그인을 하지 않은 유저는 일정을 작성할 수 없다.
+    - 일정을 전체 조회할 수 있다.
+        - 최근 수정일을 기준으로 조회한다.
+        - 페이지당 10개의 일정을 조회한다.
+    - 일정을 조회할 수 있다.
+    - 일정을 수정할 수 있다.
+        - 로그인을 하지 않거나 본인의 일정이 아니라면 일정을 수정할 수 없다.
+    - 일정을 삭제할 수 있다.
+        - 로그인을 하지 않거나 본인의 일정이 아니라면 일정을 삭제할 수 없다.
+- 댓글
+    - 일정에 댓글을 생성할 수 있다.
+        - 로그인을 하지 않은 유저는 댓글을 작성할 수 없다.
+    - 일정안에 댓글을 전체 조회할 수 있다.
+        - 최근 작성일을 기준으로 조회한다.
+    - 댓글을 수정할 수 있다.
+        - 로그인을 하지 않거나 본인의 댓글이 아니라면 댓글을 수정할 수 없다.
+    - 댓글을 삭제할 수 있다.
+        - 로그인을 하지 않거나 본인의 댓글이 아니라면 댓글을 삭제할 수 없다.
+
 ## API 명세서
 
+- [REST Docs]
+
 ## ERD
+
+```mermaid
+---
+title: Calendar
+---
+erDiagram
+    user ||--o{ comment : contains
+    user ||--o{ schedule : contains
+    user{
+        uuid id PK "user_id"
+        string name
+        string email
+        string password
+        timestamp created_at
+    }
+    schedule ||--o{ comment : contains
+    schedule{
+        uuid id PK "schedule_id"
+        uuid user_id FK "user_id"
+        string title
+        string todo
+        timestamp created_at
+        timestamp updated_at
+    }
+    comment{
+        uuid id PK
+        uuid user_id FK "user_id"
+        uuid schedule_id FK "schedule_id"
+        string content
+        timestamp created_at
+        timestamp updated_at
+    }
+```
 
 ## 기능 요구 사항
 

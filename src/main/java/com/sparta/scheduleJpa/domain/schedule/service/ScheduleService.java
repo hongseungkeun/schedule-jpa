@@ -33,14 +33,11 @@ public class ScheduleService {
     }
 
     public Page<ScheduleReadDetailRes> readOverallSchedule(Pageable pageable) {
-        return new PageImpl<>(scheduleRepository.findAll(pageable)
-                .stream()
-                .map(ScheduleReadDetailRes::from)
-                .toList());
+        return new PageImpl<>(scheduleRepository.findSchedulesAndCommentCountAll(pageable));
     }
 
     public ScheduleReadDetailRes readDetailSchedule(Long scheduleId) {
-        return ScheduleReadDetailRes.from(findScheduleById(scheduleId));
+        return scheduleRepository.findSchedulesAndCommentCountById(scheduleId);
     }
 
     @Transactional
