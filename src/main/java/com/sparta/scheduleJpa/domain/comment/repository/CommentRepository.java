@@ -10,7 +10,7 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("SELECT new com.sparta.scheduleJpa.domain.comment.dto.response.CommentReadDetailRes" +
-            "(c.id, c.user.name, c.content, c.createdAt, c.updatedAt) FROM Comment c " +
+            "(c.id, c.content, c.createdAt, c.updatedAt, c.user.id, c.user.name) FROM Comment c " +
             "ORDER BY c.createdAt DESC")
     List<CommentReadDetailRes> findAllByScheduleIdOrderByCreatedAtDesc(Long scheduleId);
 }
