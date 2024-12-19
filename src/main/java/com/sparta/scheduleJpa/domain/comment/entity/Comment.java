@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -43,7 +44,7 @@ public class Comment extends AuditableEntity {
     }
 
     public void updateContent(String content) {
-        if (content != null) {
+        if (StringUtils.hasText(content)) {
             this.content = content;
         }
     }

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -40,13 +41,13 @@ public class User extends BaseEntity {
     }
 
     private void updateName(String name) {
-        if (name != null) {
+        if (StringUtils.hasText(name)) {
             this.name = name;
         }
     }
 
     private void updatePassword(String password) {
-        if (password != null) {
+        if (StringUtils.hasText(password)) {
             this.password = password;
         }
     }

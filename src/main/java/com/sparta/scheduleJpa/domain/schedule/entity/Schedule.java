@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Getter
@@ -45,13 +46,13 @@ public class Schedule extends AuditableEntity {
     }
 
     private void updateTitle(String title) {
-        if (title != null) {
+        if (StringUtils.hasText(title)) {
             this.title = title;
         }
     }
 
     private void updateTodo(String todo) {
-        if (todo != null) {
+        if (StringUtils.hasText(todo)) {
             this.todo = todo;
         }
     }
