@@ -9,7 +9,6 @@ import com.sparta.scheduleJpa.domain.user.exception.PasswordNotMatchedException;
 import com.sparta.scheduleJpa.domain.user.exception.UserNotFoundException;
 import com.sparta.scheduleJpa.domain.user.repository.UserRepository;
 import com.sparta.scheduleJpa.global.config.PasswordEncoder;
-import com.sparta.scheduleJpa.global.exception.UnauthorizedException;
 import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,9 +63,7 @@ public class UserService {
     public User checkUserAuthentication(Long userId, Long loginUserId) {
         User user = findUserById(userId);
 
-        if (!user.getId().equals(loginUserId)) {
-            throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
-        }
+        user.checkLoginUser(loginUserId);
 
         return user;
     }

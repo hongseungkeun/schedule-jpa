@@ -10,7 +10,8 @@ import jakarta.validation.constraints.Size;
 public record CommentCreateReq(
         @Size(max = CommentValidationMessages.CONTENT_MAX, message = CommentValidationMessages.CONTENT_MAX_MESSAGE)
         @NotBlank(message = CommentValidationMessages.CONTENT_BLANK_MESSAGE)
-        String content
+        String content,
+        Long scheduleId
 ) {
 
     public Comment toEntity(Schedule schedule, User user) {
