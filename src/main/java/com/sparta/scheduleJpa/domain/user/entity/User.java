@@ -1,6 +1,8 @@
 package com.sparta.scheduleJpa.domain.user.entity;
 
 import com.sparta.scheduleJpa.domain.common.entity.BaseEntity;
+import com.sparta.scheduleJpa.global.exception.UnauthorizedException;
+import com.sparta.scheduleJpa.global.exception.error.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -33,6 +35,12 @@ public class User extends BaseEntity {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public void checkLoginUser(Long loginUserId) {
+        if (!this.getId().equals(loginUserId)) {
+            throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
+        }
     }
 
     public void update(String name, String password) {
