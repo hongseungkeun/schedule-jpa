@@ -27,9 +27,9 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public Long createComment(Long scheduleId, CommentCreateReq request, Long loginUserId) {
+    public Long createComment(CommentCreateReq request, Long loginUserId) {
         User user = userService.findUserById(loginUserId);
-        Schedule schedule = scheduleService.findScheduleById(scheduleId);
+        Schedule schedule = scheduleService.findScheduleById(request.scheduleId());
 
         Comment comment = commentRepository.save(request.toEntity(schedule, user));
 

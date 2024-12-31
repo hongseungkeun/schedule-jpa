@@ -15,19 +15,18 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/schedules")
+@RequestMapping("/api/comments")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/{scheduleId}/comments")
+    @PostMapping
     public ResponseEntity<Void> createComment(
-            @PathVariable final Long scheduleId,
             @RequestBody @Valid final CommentCreateReq request,
             @SessionAttribute(name = SessionUtil.SESSION_KEY) final Long loginUserId
     ) {
-        final Long commentId = commentService.createComment(scheduleId, request, loginUserId);
+        final Long commentId = commentService.createComment(request, loginUserId);
 
         final URI uri = UriComponentsBuilder.fromPath("/api/comments/{commentId}")
                 .buildAndExpand(commentId)
@@ -36,14 +35,14 @@ public class CommentController {
         return ResponseEntity.created(uri).build();
     }
 
-    @GetMapping("/{scheduleId}/comments")
+    @GetMapping
     public ResponseEntity<List<CommentReadDetailRes>> readComments(
-            @PathVariable final Long scheduleId
+            @RequestParam final Long scheduleId
     ) {
         return ResponseEntity.ok(commentService.readOverallComments(scheduleId));
     }
 
-    @PatchMapping("/comments/{commentId}")
+    @PatchMapping("/{commentId}")
     public ResponseEntity<Void> updateComment(
             @PathVariable final Long commentId,
             @RequestBody @Valid final CommentUpdateReq request,
@@ -54,7 +53,7 @@ public class CommentController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/comments/{commentId}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(
             @PathVariable final Long commentId,
             @SessionAttribute(name = SessionUtil.SESSION_KEY) final Long loginUserId
